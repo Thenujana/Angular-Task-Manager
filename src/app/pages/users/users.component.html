@@ -1,16 +1,29 @@
-<div>
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="..." class="img-fluid rounded-start" alt="...">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-            </div>
-          </div>
+<div class="user-page">
+  <h1 class="page-title">Task Board</h1>
+
+  <div class="kanban-board">
+    <div class="kanban-column"
+         *ngFor="let column of columns; let i = index"
+         cdkDropList
+         id="cdk-drop-list-{{i}}"
+         [cdkDropListData]="column.tasks"
+         [cdkDropListConnectedTo]="getConnectedLists(i)"
+         (cdkDropListDropped)="drop($event, i)">
+
+      <h2>{{ column.title }}</h2>
+
+      <div class="kanban-task" *ngFor="let task of column.tasks" cdkDrag>
+        <div class="task-card">
+          <h3>{{ task.title }}</h3>
+          <p>{{ task.description }}</p>
+          <small>Assigned to: User #{{ task.assignedUserId }}</small>
         </div>
       </div>
+
+      <div class="empty-column" *ngIf="column.tasks.length === 0">
+        <p>No tasks</p>
+      </div>
+
+    </div>
   </div>
+</div>
